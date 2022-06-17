@@ -3,17 +3,15 @@ package selenium.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class RequestLoanResultPage {
+public class RequestLoanResultPage extends BasePage {
 
-    private WebDriver driver;
-
-    private By textlabelLoanApplicationResult = By.id("loanStatus");
+    private final By textlabelLoanApplicationResult = By.id("loanStatus");
 
     public RequestLoanResultPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public String getLoanApplicationResult() {
-        return driver.findElement(textlabelLoanApplicationResult).getText();
+        return getElementText(textlabelLoanApplicationResult);
     }
 }

@@ -12,16 +12,17 @@ import selenium.pages.*;
 
 import java.time.Duration;
 
+import static io.restassured.RestAssured.given;
+
 public class RequestLoanTest {
 
     private WebDriver driver;
 
     @BeforeEach
-    public void startBrowser() {
+    public void executeTestSetup() {
 
-        WebDriverManager.chromedriver().setup();
-        this.driver = new ChromeDriver();
-        this.driver.manage().window().maximize();
+        initializeDatabase();
+        startBrowser();
     }
 
     @Test
@@ -73,19 +74,24 @@ public class RequestLoanTest {
     }
 
     @AfterEach
-    public void stopBrowser() {
+    public void executeTestTeardown() {
 
         driver.quit();
     }
 
-    private void click(By locator) {
+    private void initializeDatabase() {
 
-        try {
-            new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(locator));
-            driver.findElement(locator).click();
-        }
-        catch (TimeoutException te) {
-            Assertions.fail(String.format("Exception in click(): %s", te.getMessage()));
-        }
+        given()
+                .when()
+                .post("http://localhost:8080/parabank/services/bank/initializeDB")
+                .then()
+                .statusCode(204);
+    }
+
+    private void startBrowser() {
+
+        WebDriverManager.chromedriver().setup();
+        this.driver = new ChromeDriver();
+        this.driver.manage().window().maximize();
     }
 }

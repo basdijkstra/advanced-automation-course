@@ -4,23 +4,21 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class RequestLoanPage {
+public class RequestLoanPage extends BasePage {
 
-    private WebDriver driver;
-
-    private By textfieldLoanAmount = By.id("amount");
-    private By textfieldDownPayment = By.id("downPayment");
-    private By dropdownFromAccountId = By.id("fromAccountId");
-    private By buttonApplyForLoan = By.xpath("//input[@value='Apply Now']");
+    private final By textfieldLoanAmount = By.id("amount");
+    private final By textfieldDownPayment = By.id("downPayment");
+    private final By dropdownFromAccountId = By.id("fromAccountId");
+    private final By buttonApplyForLoan = By.xpath("//input[@value='Apply Now']");
 
     public RequestLoanPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public void applyForLoan(String loanAmount, String downPayment, String fromAccount) {
-        driver.findElement(textfieldLoanAmount).sendKeys(loanAmount);
-        driver.findElement(textfieldDownPayment).sendKeys(downPayment);
-        new Select(driver.findElement(dropdownFromAccountId)).selectByVisibleText(fromAccount);
-        driver.findElement(buttonApplyForLoan).click();
+        sendKeys(textfieldLoanAmount, loanAmount);
+        sendKeys(textfieldDownPayment, downPayment);
+        select(dropdownFromAccountId, fromAccount);
+        click(buttonApplyForLoan);
     }
 }
